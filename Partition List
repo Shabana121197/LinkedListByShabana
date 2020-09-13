@@ -1,0 +1,79 @@
+There are two ways to solve this problem:
+1) By interviewbit : without modifying the existing list
+
+
+public class Solution {
+    public ListNode partition(ListNode A, int B) {
+        ListNode curr = A;
+        ListNode head = new ListNode(-1);
+        head.next = A;
+        ListNode prev = head;
+
+        ListNode smallerHead = new ListNode(-1);
+        ListNode small = smallerHead;
+
+        while(curr!=null){
+            if(curr.val < B){
+                small.next = curr;
+                small = small.next;
+
+                prev.next = curr.next;
+                curr = curr.next;
+            }
+
+            else{
+                prev = curr;
+                curr = curr.next;
+            }
+        }
+
+        small.next = head.next;
+        return smallerHead.next;
+    }
+}
+
+
+2)By me, it's the game of pointers, 1st one is very easy so try using 2nd only.
+
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     public int val;
+ *     public ListNode next;
+ *     ListNode(int x) { val = x; next = null; }
+ * }
+ */
+public class Solution {
+    public ListNode partition(ListNode list, int givenValue) {
+        if(list == null || list.next == null) return list;
+        ListNode temp = new ListNode(0);
+        temp.next = list;
+        ListNode big = null, prev = temp, cur, next, befCur;
+        while(prev.next != null) { 
+            if(prev.next.val >= givenValue) {
+                big = prev.next;
+                break;
+            }
+            prev = prev.next;
+        }
+        if(big == null) return temp.next;
+        else cur = big.next;
+        befCur = big;
+        while(cur != null) {
+            next = cur.next;
+            if(cur.val < givenValue) {
+                befCur.next = next;
+                prev.next = cur;
+                cur.next = big;
+                prev = prev.next;
+            } else {
+            befCur = cur;
+            }
+            cur = next;
+        }
+        return temp.next;
+    }
+}
+
+
+
