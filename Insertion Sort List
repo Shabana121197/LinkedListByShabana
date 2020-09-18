@@ -1,3 +1,6 @@
+There are two ways to solve this problem: 
+1) By modifying the existing list. Code is below:
+
 public class Solution {
     public ListNode insertionSortList(ListNode list) {
         if(list == null || list.next == null) return list;
@@ -24,4 +27,40 @@ public class Solution {
         return head.next;
     }
 }
+
+2) By creating new sorted list. Code is below: 
+
+class Solution {
+public:
+    ListNode *insertionSortList(ListNode *head) {
+        if(!head) return head;
+        if(!head->next) return head;
+
+        ListNode *sorted = NULL;
+        ListNode *list = head;
+        while(list) {
+            ListNode *curr = list;
+            list = list->next;
+            if(sorted == NULL || sorted->val > curr->val) {
+                // first lookup
+                curr->next = sorted; //this indicates the end of sorted list
+                sorted = curr;
+            } else {
+                // insert somewhere after the fisrt of sorted
+                ListNode *tmp = sorted;
+                while (tmp) {
+                    ListNode *s = tmp;
+                    tmp = tmp->next;
+
+                    if (s->next == NULL || s->next->val > curr->val) {
+                        s->next = curr;
+                        curr->next = tmp;
+                        break;
+                    }
+                }
+            }
+        }
+        return sorted;
+    }
+};
  
